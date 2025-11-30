@@ -407,7 +407,14 @@ io.on('connection', socket => {
   });
 });
 
-// ====== START SERVER ======
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// ====== START SERVER (only when run directly) ======
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export app for serverless / Vercel-like usage
+module.exports = app;
+
+
