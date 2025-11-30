@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MYRA – Social</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts: brand + UI -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- LOGIN / SIGNUP OVERLAY -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <span class="logo-dot"></span>
+        <div class="auth-logo-text">
+          <span class="brand-name logo-wordmark">MYRA</span>
+          <span class="brand-tagline">Sign in to your social cloud</span>
+        </div>
+      </div>
+
+      <div class="auth-tabs">
+        <button id="loginTab" class="auth-tab active">Log In</button>
+        <button id="signupTab" class="auth-tab">Sign Up</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="auth-form">
+        <label for="loginEmail">Email or Username</label>
+        <input id="loginEmail" type="text" autocomplete="off" />
+
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" type="password" />
+
+        <button type="submit" class="auth-btn">Log In</button>
+        <p id="loginStatus" class="auth-status"></p>
+      </form>
+
+      <!-- SIGNUP FORM -->
+      <form id="signupForm" class="auth-form hidden">
+        <label for="signupUsername">Username</label>
+        <input id="signupUsername" type="text" autocomplete="off" />
+
+        <label for="signupEmail">Email</label>
+        <input id="signupEmail" type="email" autocomplete="off" />
+
+        <label for="signupPassword">Password</label>
+        <input id="signupPassword" type="password" />
+
+        <button type="submit" class="auth-btn">Create Account</button>
+        <p id="signupStatus" class="auth-status"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app" class="app hidden">
+    <!-- TOP NAVBAR -->
+    <header class="top-nav">
+      <div class="nav-left">
+        <!-- Wordmark only, no camera icon -->
+        <span class="nav-brand logo-wordmark">MYRA</span>
+      </div>
+      <div class="nav-center">
+        <input id="searchInput" type="text" placeholder="Search users..." />
+        <div id="searchResults" class="search-results hidden"></div>
+      </div>
+      <div class="nav-right">
+        <button id="navHome" class="nav-icon-btn" title="Feed">🏠</button>
+        <button id="navNews" class="nav-icon-btn" title="Global news">🧭</button>
+        <button id="navChat" class="nav-icon-btn" title="Chats">💬</button>
+        <div id="navProfileBtn" class="nav-profile clickable" title="Your profile">
+          <div class="nav-avatar" id="navAvatar">U</div>
+          <span id="navUsername" class="nav-username">User</span>
+        </div>
+
+        <!-- Theme toggle -->
+        <button id="themeToggleBtn" class="nav-icon-btn" title="Toggle theme">
+          🌙
+        </button>
+
+        <button id="logoutBtn" class="nav-icon-btn" title="Log out">🚪</button>
+      </div>
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <div class="layout">
+      <!-- LEFT COLUMN (SIDEBAR ICONS) -->
+      <aside class="left-sidebar">
+        <button class="side-btn active" data-section="feed">🏠 Feed</button>
+        <button class="side-btn" data-section="news">🧭 News</button>
+        <button class="side-btn" data-section="chat">💬 Chats</button>
+        <button class="side-btn" data-section="profile">👤 Profile</button>
+      </aside>
+
+      <!-- CENTER – FEED, NEWS, CHAT, PROFILE -->
+      <main class="center">
+        <!-- FEED SECTION -->
+        <section id="feedSection" class="section">
+          <!-- New Post -->
+          <div class="card new-post-card">
+            <div class="new-post-header">
+              <div class="nav-avatar small" id="newPostAvatar">U</div>
+              <span>Create new post</span>
+            </div>
+
+            <form id="newPostForm" class="new-post-form">
+              <div class="new-post-media-row">
+                <button type="button" id="postImageBtn" class="icon-pill-btn">
+                  🖼 Upload image
+                </button>
+                <span id="postImageLabel" class="file-label">
+                  No image selected
+                </span>
+              </div>
+              <input
+                type="file"
+                id="postImageInput"
+                accept="image/*"
+                class="hidden-input"
+              />
+
+              <textarea
+                id="postCaption"
+                rows="2"
+                placeholder="Write a caption..."
+              ></textarea>
+              <button type="submit">Share</button>
+            </form>
+          </div>
+
+          <!-- Feed Posts -->
+          <div id="feedContainer" class="feed-container"></div>
+        </section>
+
+        <!-- NEWS / REELS-LIKE SECTION -->
+        <section id="newsSection" class="section hidden">
+          <div class="card news-card">
+            <div class="news-header">
+              <h2>Global News</h2>
+              <p class="news-subtitle">
+                Scroll through curated stories from around the world.
+              </p>
+            </div>
+            <div id="newsContainer" class="news-container"></div>
+          </div>
+        </section>
+
+        <!-- CHAT SECTION – PRIVATE CHATS -->
+        <section id="chatSection" class="section hidden">
+          <div class="card chat-card">
+            <div class="chat-header">
+              <h2 id="chatHeaderTitle">Direct Messages</h2>
+              <span class="chat-subtitle" id="chatHeaderSubtitle">
+                Search a user and start a private chat
+              </span>
+            </div>
+
+            <div id="chatMessages" class="chat-messages"></div>
+
+            <div class="chat-composer">
+              <input type="file" id="chatFileInput" class="hidden-input" />
+              <button id="chatAttachBtn" class="chat-btn">📎</button>
+              <input id="chatMessageInput" placeholder="Message..." />
+              <button id="chatSendBtn" class="chat-btn primary">➤</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROFILE PAGE SECTION (CENTER) -->
+        <section id="profileSection" class="section hidden">
+          <div class="card big-profile-card">
+            <div class="big-profile-header">
+              <div class="big-profile-avatar" id="bigProfileAvatar">U</div>
+              <div class="big-profile-info">
+                <h2 id="bigProfileUsername">Username</h2>
+                <p id="bigProfileBio" class="big-profile-bio"></p>
+              </div>
+            </div>
+            <button id="profileMessageBtn" class="profile-message-btn hidden">
+              Message
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <!-- RIGHT – CURRENT USER PROFILE SUMMARY -->
+      <aside class="right-sidebar">
+        <div class="card profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <div class="profile-info">
+              <span id="profileUsername" class="profile-username">Username</span>
+              <span id="profileEmail" class="profile-email">email@example.com</span>
+            </div>
+          </div>
+
+          <form id="profileForm" class="profile-form">
+            <label for="bioInput">Your Bio</label>
+            <textarea
+              id="bioInput"
+              rows="3"
+              placeholder="Write something about you..."
+            ></textarea>
+
+            <label for="avatarInput">Avatar</label>
+            <input type="file" id="avatarInput" accept="image/*" />
+
+            <button type="submit">Update Profile</button>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.8.0/socket.io.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
